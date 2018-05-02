@@ -1,0 +1,24 @@
+{
+    "status": 0,
+    "msg": "",
+    "result": [
+        {
+            "productId": "100001",
+            "productName": "小钢炮蓝牙音响",
+            "productPrice": 129.00,
+            "productImg": "./static/1.jpg"
+        },
+        {
+            "productId": "100002",
+            "productName": "头戴式耳机-3",
+            "productPrice": 80.00,
+            "productImg": "./static/2.jpg"
+        },
+        {
+            "productId": "100003",
+            "productName": "Ear700",
+            "productPrice": 700.00,
+            "productImg": "./static/3.jpg"
+        }
+    ]
+}
