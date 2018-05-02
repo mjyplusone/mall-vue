@@ -31,4 +31,5 @@ export default {
         display: flex
         flex-flow: column
         min-height: 100vh
+        min-width: 320px
 </style>
