@@ -21,54 +21,14 @@
                     <!-- 这里不绑定key VSCode会报错 -->
                     <li v-for="goods in goodsList" :key="goods.productId">
                         <div class="content">
-                            <a href="/"><img v-lazy="goods.productImg" alt="" width="100%"></a>
+                            <a href="/"><img v-lazy="'/static/' + goods.productImage" alt="" width="100%"></a>
                             <div class="info">
                                 <div class="name">{{ goods.productName }}</div>
-                                <div class="price">￥{{ goods.productPrice }}</div>
+                                <div class="price">￥{{ goods.salePrice }}</div>
                                 <div class="btn"><a href="/">加入购物车</a></div>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="content">
-                            <a href="/"><img src="../../common/image/1.jpg" alt="" width="100%"></a>
-                            <div class="info">
-                                <div class="name">蓝牙音响</div>
-                                <div class="price">￥129.00</div>
-                                <div class="btn"><a href="/">加入购物车</a></div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="content">
-                            <a href="/"><img src="../../common/image/1.jpg" alt="" width="100%"></a>
-                            <div class="info">
-                                <div class="name">蓝牙音响</div>
-                                <div class="price">￥129.00</div>
-                                <div class="btn"><a href="/">加入购物车</a></div>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- <li>
-                        <div class="content">
-                            <a href="/"><img src="../../common/image/1.jpg" alt="" width="100%"></a>
-                            <div class="info">
-                                <div class="name">蓝牙音响</div>
-                                <div class="price">￥129.00</div>
-                                <div class="btn"><a href="/">加入购物车</a></div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="content">
-                            <a href="/"><img src="../../common/image/1.jpg" alt="" width="100%"></a>
-                            <div class="info">
-                                <div class="name">蓝牙音响</div>
-                                <div class="price">￥129.00</div>
-                                <div class="btn"><a href="/">加入购物车</a></div>
-                            </div>
-                        </div>
-                    </li> -->
                 </ul>
             </div>
         </div>
@@ -125,9 +85,9 @@ export default {
     methods: {
         _getGoodsList () {
             getGoodsList().then((res) => {
-                if (res.status === 0) {
+                if (res.status === '0') {
                     console.log(res);
-                    this.goodsList = res.result;
+                    this.goodsList = res.result.list;
                 }
             });
         },

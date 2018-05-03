@@ -51,12 +51,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    // mock数据
-    before(app) {
-      app.get('/api/goods', (req, res) => {
-        res.json(goodsData);  //接口返回json数据，上面配置的数据seller就赋值给data请求后调用
-      });
-    }
+    // // mock数据
+    // before(app) {
+    //   app.get('/api/goods', (req, res) => {
+    //     res.json(goodsData);  //接口返回json数据，上面配置的数据seller就赋值给data请求后调用
+    //   });
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({
