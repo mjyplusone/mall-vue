@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-export function getGoodsList () {
-    return axios.get('/api/goods')
-        .then((res) => {
+export function getGoodsList (param) {
+    return axios.get('/api/goods', {
+        params: param
+    }).then((res) => {
             return Promise.resolve(res.data);
-        });
+    });
 }

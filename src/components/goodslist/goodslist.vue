@@ -2,16 +2,16 @@
   <div class="goodslist">
       <div class="goodslist-content">
         <div class="sort">
-            <span class="sort-text">排序:&nbsp;&nbsp;&nbsp;&nbsp;<span class="pricesort">价格从低到高</span></span>
+            <span class="sort-text" @click="sortPrice">排序:&nbsp;&nbsp;&nbsp;&nbsp;<span class="pricesort">{{ sortPriceText }}</span></span>
             <span class="filter-text" @click="showSideFilter">FILTER BY</span>
         </div>
         <div class="goodsinfo-container">
             <div class="price-filter">
                 <div class="title">PRICE:</div>
                 <ul class="price-list">
-                    <li :class="{'selected': priceRange === 'all'}" @click="priceRange = 'all'">All</li>
+                    <li :class="{'selected': priceRange === 'all'}" @click="setPriceRange('all')">All</li>
                     <li v-for="(price, index) in priceFilter" :key="price.startPrice"
-                        @click="priceRange = index" :class="{'selected': priceRange === index}">
+                        @click="setPriceRange(index)" :class="{'selected': priceRange === index}">
                         {{ price.startPrice }}-{{ price.endPrice }}
                     </li>
                 </ul>
@@ -30,6 +30,9 @@
                         </div>
                     </li>
                 </ul>
+                <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30" v-show="hasmore">
+                    loading...
+                </div>
             </div>
         </div>
       </div>
@@ -38,9 +41,9 @@
           <div class="side-filter" v-show="isShowSide">
                 <div class="title">PRICE:</div>
                 <ul class="price-list">
-                    <li :class="{'selected': priceRange === 'all'}" @click="priceRange = 'all'">All</li>
+                    <li :class="{'selected': priceRange === 'all'}" @click="setPriceRange('all')">All</li>
                     <li v-for="(price, index) in priceFilter" :key="price.startPrice"
-                        @click="priceRange = index" :class="{'selected': priceRange === index}">
+                        @click="setPriceRange(index)" :class="{'selected': priceRange === index}">
                         {{ price.startPrice }}-{{ price.endPrice }}
                     </li>
                 </ul>
@@ -75,27 +78,92 @@ export default {
                     endPrice: '2000.00'
                 }
             ],
+            // 价格过滤
             priceRange: 'all',
-            isShowSide: false
+            priceFilterStart: -1,
+            priceFilterEnd: -1,
+            // 侧栏
+            isShowSide: false,
+            // 1升序 -1降序
+            priceSort: true,
+            // 分页相关
+            page: 1,
+            pageSize: 8,
+            // 下拉加载参数
+            busy: true,
+            hasmore: true
         };
     },
     created () {
         this._getGoodsList();
     },
     methods: {
-        _getGoodsList () {
-            getGoodsList().then((res) => {
+        _getGoodsList (flag) {
+            var param = {
+                page: this.page,
+                pagesize: this.pageSize,
+                sort: this.priceSort ? 1 : -1,
+                pricestart: this.priceFilterStart,
+                priceend: this.priceFilterEnd
+            };
+            getGoodsList(param).then((res) => {
                 if (res.status === '0') {
-                    console.log(res);
-                    this.goodsList = res.result.list;
+                    // flag=true表示下拉加载情况
+                    if (flag) {
+                        if (res.result.count === 0) {
+                            this.busy = true;
+                            this.hasmore = false;
+                        } else {
+                            this.busy = false;
+                        }
+                        this.goodsList = this.goodsList.concat(res.result.list);
+                    } else {
+                        this.goodsList = res.result.list;
+                        this.busy = false;
+                        this.hasmore = true;
+                    }
+                    console.log(this.goodsList);
                 }
             });
+        },
+        sortPrice () {
+            this.priceSort = !this.priceSort;
+            // 点击升序降序按钮,分页从第一页开始,并重新获得数据
+            this.page = 1;
+            this._getGoodsList();
         },
         showSideFilter () {
             this.isShowSide = true;
         },
         hideSideFilter () {
             this.isShowSide = false;
+        },
+        // 下拉加载
+        loadMore () {
+            console.log('loadmore');
+            // 节流
+            setTimeout(() => {
+                this.page++;
+                this._getGoodsList(true);
+            }, 500);
+        },
+        setPriceRange (range) {
+            this.priceRange = range;
+            if (this.priceRange !== 'all') {
+                let index = this.priceRange;
+                this.priceFilterStart = parseInt(this.priceFilter[index].startPrice);
+                this.priceFilterEnd = parseInt(this.priceFilter[index].endPrice);
+            } else {
+                this.priceFilterStart = -1;
+                this.priceFilterEnd = -1;
+            }
+            this.page = 1;
+            this._getGoodsList();
+        }
+    },
+    computed: {
+        sortPriceText () {
+            return this.priceSort ? '价格从低到高' : '价格从高到低';
         }
     }
 };
