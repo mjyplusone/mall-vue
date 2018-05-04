@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 
 // 加载模型表(加载私有文件)
 var Goods = require('../models/goods');
+var User = require('../models/user');
 
 // 连接数据库,mongoose自带驱动
 mongoose.connect('mongodb://127.0.0.1:27017/easymallDB');
@@ -22,8 +23,9 @@ mongoose.connection.on("disconnected", function () {
 });
 
 // 路由
+// 查询商品列表
 router.get('/', function (req, res, next) {
-    // 从url中取参数(express封装后的方法)
+    // get取参(express封装后的方法)
     let page = parseInt(req.query.page);
     let pageSize = parseInt(req.query.pagesize);
     let sort = req.query.sort;
@@ -69,6 +71,91 @@ router.get('/', function (req, res, next) {
             });
         }
     })
+});
+
+// 加入购物车   /api/goods/addcart
+router.post('/addcart', function (req, res, next) {
+    var userId = '100000077';
+
+    // post取参
+    var productId = req.body.productId;
+    console.log(productId);
+
+    User.findOne({userId: userId}, function (userErr, userDoc) {
+        if (userErr) {
+            res.json({
+                status: '1',
+                msg: userErr.message
+            });
+        } else {
+            // 用户存在
+            if (userDoc) {
+                // 判断用户购物车中是否已经有此商品
+                let goodsItem = '';
+                userDoc.cartList.forEach((item) => {
+                    if (item.productId === productId) {
+                        goodsItem = item;
+                        item.productNum++;
+                    }
+                });
+                // 用户购物车中已经有此商品
+                if (goodsItem) {
+                    // 保存
+                    userDoc.save(function (err, doc) {
+                        if (err) {
+                            res.json({
+                                status: '1',
+                                msg: err.message
+                            });
+                        } else {
+                            res.json({
+                                status: '0',
+                                msg: '',
+                                result: 'success'
+                            })
+                        }
+                    });
+                } else {
+                // 用户购物车中没有此商品
+                    // 在商品列表里查询此商品
+                    Goods.findOne({productId: productId}, function (goodsErr, goodsDoc) {
+                        if (goodsErr) {
+                            res.json({
+                                status: '1',
+                                msg: goodsErr.message
+                            });
+                        } else {
+                            if (goodsDoc) {
+                                goodsDoc.productNum = 1;
+                                // 选中状态
+                                goodsDoc.checked = 1;
+
+                                console.log(goodsDoc);
+    
+                                // 商品信息加到用户名下
+                                userDoc.cartList.push(goodsDoc);
+
+                                userDoc.save(function (err, doc) {
+                                    if (err) {
+                                        res.json({
+                                            status: '1',
+                                            msg: err.message
+                                        });
+                                    } else {
+                                        res.json({
+                                            status: '0',
+                                            msg: '',
+                                            result: 'success'
+                                        })
+                                    }
+                                });
+                            }
+                        }
+                    });
+                } 
+            }
+        }
+    });
 });
 
 module.exports = router;

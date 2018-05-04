@@ -6,7 +6,9 @@ var productSchema = new Schema({
     "productId": String,
     "productName": String,
     "salePrice": Number,
-    "productImage": String
+    "productImage": String,
+    "productNum": Number,
+    "checked": String
 });
 
 // 输出model模型,可以基于它调用API

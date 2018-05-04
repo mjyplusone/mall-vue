@@ -25,7 +25,7 @@
                             <div class="info">
                                 <div class="name">{{ goods.productName }}</div>
                                 <div class="price">￥{{ goods.salePrice }}</div>
-                                <div class="btn"><a href="/">加入购物车</a></div>
+                                <div class="btn"><a href="/" @click.prevent="addCart(goods.productId)">加入购物车</a></div>
                             </div>
                         </div>
                     </li>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {getGoodsList} from 'api/goods.js';
+import {getGoodsList, addCartPost} from 'api/goods.js';
 
 export default {
     data () {
@@ -159,6 +159,15 @@ export default {
             }
             this.page = 1;
             this._getGoodsList();
+        },
+        addCart (id) {
+            addCartPost(id).then((res) => {
+                if (res.status === '0') {
+                    console.log('addcart success');
+                } else {
+                    console.log('addcart err:' + res.msg);
+                }
+            });
         }
     },
     computed: {
