@@ -3,14 +3,24 @@
     <div class="header-content">
       <div class="logo"></div>
       <div class="title">EasyMall</div>
-      <div class="login">Login</div>
+      <div class="login" @click="showLogin">Login</div>
       <div class="shopcart"></div>
     </div>
   </div>
 </template>
 
 <script>
+import {mapMutations} from 'vuex';
+
 export default {
+  methods: {
+    showLogin () {
+      this.setIsShowLogin(true);
+    },
+    ...mapMutations({
+      setIsShowLogin: 'SET_ISSHOWLOGIN'
+    })
+  }
 };
 </script>
 

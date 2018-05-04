@@ -36,9 +36,9 @@
             </div>
         </div>
       </div>
+      <transition name="fade">
       <div class="side-wrapper" v-show="isShowSide" @click="hideSideFilter">
-          <transition name="fade">
-          <div class="side-filter" v-show="isShowSide">
+          <div class="side-filter">
                 <div class="title">PRICE:</div>
                 <ul class="price-list">
                     <li :class="{'selected': priceRange === 'all'}" @click="setPriceRange('all')">All</li>
@@ -48,8 +48,8 @@
                     </li>
                 </ul>
           </div>
-          </transition>
       </div>
+      </transition>
   </div>
 </template>
 
@@ -359,6 +359,11 @@ export default {
             left: 0
             right: 0
             background: rgba(0, 0, 0, 0.5)
+            transition: all .5s
+            &.fade-enter, &.fade-leave-to
+                opacity: 0
+            &.fade-enter .side-filter, &.fade-leave-to .side-filter
+                right: -230px
             .side-filter
                 position: absolute
                 top: 0
@@ -367,8 +372,6 @@ export default {
                 height: 100%
                 background: #ffffff
                 transition: all .5s
-                &.fade-enter, &.fade-leave-to
-                    right: -230px
                 .title
                     height: 55px
                     padding-left: 20px

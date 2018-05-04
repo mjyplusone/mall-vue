@@ -6,6 +6,7 @@
         </navbread>
         <goodslist></goodslist>
         <m-footer></m-footer>
+        <loginmodal></loginmodal>
     </div>
 </template>
 
@@ -14,13 +15,15 @@ import MHeader from 'components/m-header/m-header.vue';
 import navbread from 'components/navbread/navbread.vue';
 import goodslist from 'components/goodslist/goodslist.vue';
 import MFooter from 'components/m-footer/m-footer.vue';
+import loginmodal from 'components/loginmodal/loginmodal.vue';
 
 export default {
     components: {
         MHeader,
         navbread,
         goodslist,
-        MFooter
+        MFooter,
+        loginmodal
     }
 };
 </script>
