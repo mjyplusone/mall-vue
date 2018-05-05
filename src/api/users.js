@@ -15,3 +15,10 @@ export function userLogout () {
         return Promise.resolve(res.data);
     });
 }
+
+export function checkLogin () {
+    return axios.get('/api/users/checklogin')
+    .then((res) => {
+        return Promise.resolve(res.data);
+    });
+}

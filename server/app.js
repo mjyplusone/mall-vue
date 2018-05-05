@@ -25,6 +25,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 全局登录拦截
+app.use(function(req, res, next) {
+  // 取cookie
+  if (req.cookies.userId) {
+    // 有cookie代表用户已登录, 继续
+    next();
+  } else {
+    // 没有cookie
+    // 只拦截加入购物车请求
+    if (req.path === '/api/goods/addcart') {
+      res.json({
+        status: '1',
+        msg: '未登录',
+        result: ''
+      })
+    } else {
+      // 其余请求不拦截
+      next();
+    }
+  }
+});
+
 app.use('/', index);
 app.use('/api/users', users);
 app.use('/api/goods', goods);

@@ -50,11 +50,26 @@
           </div>
       </div>
       </transition>
+      <modal v-if="loginUserName" :mdShow="cartMdShow" @closeModal="closeCartModal">
+          <div class="modal-text">加入购物车成功!</div>
+          <div class="modal-btn">
+              <div class="btn-success left" @click="closeCartModal">继续购物</div>
+              <div class="btn-success right">查看购物车</div>
+          </div>
+      </modal>
+      <modal v-if="!loginUserName" :mdShow="cartMdShow" @closeModal="closeCartModal">
+          <div class="modal-text">您当前尚未登录</div>
+          <div class="modal-btn">
+              <div class="btn-fail" @click="closeCartModal">关闭</div>
+          </div>
+      </modal>
   </div>
 </template>
 
 <script>
 import {getGoodsList, addCartPost} from 'api/goods.js';
+import modal from 'components/modal/modal.vue';
+import {mapGetters} from 'vuex';
 
 export default {
     data () {
@@ -91,7 +106,9 @@ export default {
             pageSize: 8,
             // 下拉加载参数
             busy: true,
-            hasmore: true
+            hasmore: true,
+            // 购物车模态框是否显示
+            cartMdShow: false
         };
     },
     created () {
@@ -167,13 +184,23 @@ export default {
                 } else {
                     console.log('addcart err:' + res.msg);
                 }
+                this.cartMdShow = true;
             });
+        },
+        closeCartModal () {
+            this.cartMdShow = false;
         }
     },
     computed: {
         sortPriceText () {
             return this.priceSort ? '价格从低到高' : '价格从高到低';
-        }
+        },
+        ...mapGetters([
+            'loginUserName'
+        ])
+    },
+    components: {
+        modal
     }
 };
 </script>
@@ -399,4 +426,46 @@ export default {
                         border-left: 2px solid #ee7a23
                         color: #ee7a23
                         font-weight: bolder
+        .modal-text
+            height: 80px
+            margin-bottom: 10px
+            text-align: center
+            color: #666
+        .modal-btn
+            height: 40px
+            .btn-success
+                display: inline-block
+                width: 45%
+                margin: 0 2%
+                line-height: 40px
+                text-align: center
+                border: 1px solid #d1434a
+                box-sizing: border-box
+                font-weight: 700
+                cursor: pointer
+                &.left
+                    color: #d1434a
+                    &:hover
+                        background: rgba(209, 67, 74, 0.2)
+                &.right
+                    background: #d1434a
+                    color: #ffffff
+                    &:hover
+                        background: rgba(209, 67, 74, 0.8)
+            @media only screen and (max-width: 375px)
+                .btn-success
+                    margin: 0 1%
+                    font-size: 13px
+            .btn-fail
+                width: 50%
+                margin: 0 auto
+                line-height: 40px
+                text-align: center
+                border: 1px solid #d1434a
+                box-sizing: border-box
+                font-weight: 700
+                color: #d1434a
+                cursor: pointer
+                &:hover
+                    background: rgba(209, 67, 74, 0.2)
 </style>

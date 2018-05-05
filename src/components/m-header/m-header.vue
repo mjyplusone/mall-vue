@@ -12,9 +12,12 @@
 
 <script>
 import {mapMutations, mapGetters} from 'vuex';
-import {userLogout} from 'api/users.js';
+import {userLogout, checkLogin} from 'api/users.js';
 
 export default {
+  mounted () {
+    this._checkLogin();
+  },
   methods: {
     logToggle () {
       if (!this.loginUserName) {
@@ -28,6 +31,13 @@ export default {
           }
         });
       }
+    },
+    _checkLogin () {
+      checkLogin().then((res) => {
+        if (res.status === '0') {
+          this.setLoginUserName(res.result);
+        }
+      });
     },
     ...mapMutations({
       setIsShowLogin: 'SET_ISSHOWLOGIN',
