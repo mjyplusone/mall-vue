@@ -199,6 +199,7 @@ export default {
                     position: absolute
                     right: 40px
                     .pricesort
+                        cursor: pointer
                         &:hover
                             color: #ee7a23
                 .filter-text
@@ -230,6 +231,7 @@ export default {
                         font-size: 14px
                         color: #666666
                         transition: padding .3s ease-out
+                        cursor: pointer
                         &:hover
                             padding: 0 15px
                             border-left: 2px solid #ee7a23

@@ -3,23 +3,44 @@
     <div class="header-content">
       <div class="logo"></div>
       <div class="title">EasyMall</div>
-      <div class="login" @click="showLogin">Login</div>
+      <div class="username" v-show="loginUserName">{{ loginUserName }}</div>
+      <div class="login" @click="logToggle">{{ logText }}</div>
       <div class="shopcart"></div>
     </div>
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex';
+import {mapMutations, mapGetters} from 'vuex';
+import {userLogout} from 'api/users.js';
 
 export default {
   methods: {
-    showLogin () {
-      this.setIsShowLogin(true);
+    logToggle () {
+      if (!this.loginUserName) {
+        // login
+        this.setIsShowLogin(true);
+      } else {
+        // logout
+        userLogout().then((res) => {
+          if (res.status === '0') {
+            this.setLoginUserName('');
+          }
+        });
+      }
     },
     ...mapMutations({
-      setIsShowLogin: 'SET_ISSHOWLOGIN'
+      setIsShowLogin: 'SET_ISSHOWLOGIN',
+      setLoginUserName: 'SET_LOGINUSERNAME'
     })
+  },
+  computed: {
+    logText () {
+      return this.loginUserName ? 'Logout' : 'Login';
+    },
+    ...mapGetters([
+      'loginUserName'
+    ])
   }
 };
 </script>
@@ -48,11 +69,17 @@ export default {
         left: 80px
         font-size: 25px
         font-weight: 700
+      .username
+        position: absolute
+        right: 120px
+        line-height: 70px
+        color: #666666
       .login
         position: absolute
         right: 60px
         line-height: 70px
         color: #666666
+        cursor: pointer
         &:hover
           color: #d1434a
       .shopcart

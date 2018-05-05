@@ -1,18 +1,18 @@
 <template>
 <transition name="slide">
-  <div class="loginmodal" v-show="isShowLogin">
-      <div class="login-content">
+  <div class="loginmodal" v-show="isShowLogin" @click="closeLogin">
+      <div class="login-content" @click.stop>
           <div class="title">Login in</div>
           <div class="err" v-show="isShowErr">用户名或密码错误</div>
           <div class="textinput">
               <div class="icon icon-community"></div>
-              <input type="text">
+              <input type="text" v-model="userName">
           </div>
           <div class="textinput">
               <div class="icon icon-message"></div>
-              <input type="text">
+              <input type="text" v-model="userPwd">
           </div>
-          <div class="btn">登录</div>
+          <div class="btn" @click="login">登录</div>
           <div class="icon-close" @click="closeLogin"></div>
       </div>
   </div>
@@ -21,21 +21,44 @@
 
 <script>
 import {mapGetters, mapMutations} from 'vuex';
+import {userLogin} from 'api/users.js';
 
 export default {
     data () {
         return {
-            userName: '',
-            userPwd: '',
+            userName: 'plusone',
+            userPwd: '12345',
             isShowErr: false
         };
     },
     methods: {
         closeLogin () {
             this.setIsShowLogin(false);
+            this.isShowErr = false;
+        },
+        login () {
+            // 用户名密码不能为空
+            if (!this.userName || !this.userPwd) {
+                this.isShowErr = true;
+                return;
+            }
+
+            userLogin(this.userName, this.userPwd).then((res) => {
+                if (res.status === '0') {
+                    // 登录成功
+                    this.isShowErr = false;
+                    this.setIsShowLogin(false);
+                    // 设置登录后用户名,表示已登录
+                    this.setLoginUserName(res.result.userName);
+                } else {
+                    // 登录失败
+                    this.isShowErr = true;
+                }
+            });
         },
         ...mapMutations({
-            setIsShowLogin: 'SET_ISSHOWLOGIN'
+            setIsShowLogin: 'SET_ISSHOWLOGIN',
+            setLoginUserName: 'SET_LOGINUSERNAME'
         })
     },
     computed: {
