@@ -1,6 +1,9 @@
 <template>
-  <div class="goodslist">
-      <div class="goodslist-content">
+<div class="goodslist">
+    <navbread>
+        <span>Goods</span>
+    </navbread>
+    <div class="goodslist-content">
         <div class="sort">
             <span class="sort-text" @click="sortPrice">排序:&nbsp;&nbsp;&nbsp;&nbsp;<span class="pricesort">{{ sortPriceText }}</span></span>
             <span class="filter-text" @click="showSideFilter">FILTER BY</span>
@@ -35,38 +38,39 @@
                 </div>
             </div>
         </div>
-      </div>
-      <transition name="fade">
-      <div class="side-wrapper" v-show="isShowSide" @click="hideSideFilter">
-          <div class="side-filter">
-                <div class="title">PRICE:</div>
-                <ul class="price-list">
-                    <li :class="{'selected': priceRange === 'all'}" @click="setPriceRange('all')">All</li>
-                    <li v-for="(price, index) in priceFilter" :key="price.startPrice"
-                        @click="setPriceRange(index)" :class="{'selected': priceRange === index}">
-                        {{ price.startPrice }}-{{ price.endPrice }}
-                    </li>
-                </ul>
-          </div>
-      </div>
-      </transition>
-      <modal v-if="loginUserName" :mdShow="cartMdShow" @closeModal="closeCartModal">
-          <div class="modal-text">加入购物车成功!</div>
-          <div class="modal-btn">
-              <div class="btn-success left" @click="closeCartModal">继续购物</div>
-              <div class="btn-success right">查看购物车</div>
-          </div>
-      </modal>
-      <modal v-if="!loginUserName" :mdShow="cartMdShow" @closeModal="closeCartModal">
-          <div class="modal-text">您当前尚未登录</div>
-          <div class="modal-btn">
-              <div class="btn-fail" @click="closeCartModal">关闭</div>
-          </div>
-      </modal>
-  </div>
+    </div>
+    <transition name="fade">
+    <div class="side-wrapper" v-show="isShowSide" @click="hideSideFilter">
+        <div class="side-filter">
+            <div class="title">PRICE:</div>
+            <ul class="price-list">
+                <li :class="{'selected': priceRange === 'all'}" @click="setPriceRange('all')">All</li>
+                <li v-for="(price, index) in priceFilter" :key="price.startPrice"
+                    @click="setPriceRange(index)" :class="{'selected': priceRange === index}">
+                    {{ price.startPrice }}-{{ price.endPrice }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    </transition>
+    <modal v-if="loginUserName" :mdShow="cartMdShow" @closeModal="closeCartModal">
+        <div class="modal-text">加入购物车成功!</div>
+        <div class="modal-btn">
+            <div class="btn-success left" @click="closeCartModal">继续购物</div>
+            <router-link class="btn-success right" tag="div" to="/shopcart">查看购物车</router-link>
+        </div>
+    </modal>
+    <modal v-if="!loginUserName" :mdShow="cartMdShow" @closeModal="closeCartModal">
+        <div class="modal-text">您当前尚未登录</div>
+        <div class="modal-btn">
+            <div class="btn-fail" @click="closeCartModal">关闭</div>
+        </div>
+    </modal>
+</div>
 </template>
 
 <script>
+import navbread from 'components/navbread/navbread.vue';
 import {getGoodsList, addCartPost} from 'api/goods.js';
 import modal from 'components/modal/modal.vue';
 import {mapGetters} from 'vuex';
@@ -200,6 +204,7 @@ export default {
         ])
     },
     components: {
+        navbread,
         modal
     }
 };
