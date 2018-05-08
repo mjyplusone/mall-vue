@@ -22,3 +22,18 @@ export function checkLogin () {
         return Promise.resolve(res.data);
     });
 }
+
+export function getCartList () {
+    return axios.get('/api/users/cartlist')
+    .then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
+
+export function deleteProduct (productId) {
+    return axios.post('/api/users/deleteproduct', {
+        productId: productId
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}

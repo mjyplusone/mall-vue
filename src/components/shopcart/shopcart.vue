@@ -15,46 +15,25 @@
                       <th>EDIT</th>
                   </thead>
                   <tbody>
-                      <tr>
+                      <tr v-for="item in cartList" :key="item.productId">
                           <td class="item-name">
                               <div>
                                 <div class="checkbtn checked"></div>
-                                <img src="../../common/image/1.jpg" alt="">
-                                <span class="item-text">头戴式耳机</span>
+                                <img :src="'/static/' + item.productImage" alt="">
+                                <span class="item-text">{{ item.productName }}</span>
                               </div>
                           </td>
-                          <td class="item-price">￥80.00</td>
+                          <td class="item-price">￥{{ item.salePrice | formatPrice }}</td>
                           <td class="item-num">
                               <div class="counter">
                                   <span class="minus">-</span>
-                                  <span class="num">4</span>
+                                  <span class="num">{{ item.productNum }}</span>
                                   <span class="plus">+</span>
                               </div>
                           </td>
-                          <td class="item-subprice">￥320.00</td>
+                          <td class="item-subprice">￥{{ item.salePrice * item.productNum | formatPrice }}</td>
                           <td class="item-edit">
-                              <div class="icon-delete"></div>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td class="item-name">
-                              <div>
-                                <div class="checkbtn checked"></div>
-                                <img src="../../common/image/1.jpg" alt="">
-                                <span class="item-text">头戴式耳机</span>
-                              </div>
-                          </td>
-                          <td class="item-price">￥80.00</td>
-                          <td class="item-num">
-                              <div class="counter">
-                                  <span class="minus">-</span>
-                                  <span class="num">4</span>
-                                  <span class="plus">+</span>
-                              </div>
-                          </td>
-                          <td class="item-subprice">￥320.00</td>
-                          <td class="item-edit">
-                              <div class="icon-delete"></div>
+                              <div class="icon-delete" @click="showDeleteModal(item.productId)"></div>
                           </td>
                       </tr>
                   </tbody>
@@ -63,19 +42,82 @@
           <div class="checkout">
               <div class="checkbtn checked"></div>
               <div class="selectall">Select all</div>
-              <div class="total">Item total: <span class="totalnum">￥640.00</span></div>
+              <div class="total">Item total: <span class="totalnum">￥{{ totalPrice }}</span></div>
               <div class="checkout-btn checked">CHECKOUT</div>
           </div>
       </div>
+      <modal :mdShow="deleteMdShow" @closeModal="closeDeleteModal">
+          <div class="modal-text">确定删除此商品?</div>
+          <div class="modal-btn">
+              <div class="btn-success left" @click="deleteProduct">YES</div>
+              <div class="btn-success right" @click="closeDeleteModal">NO</div>
+          </div>
+      </modal>
   </div>
 </template>
 
 <script>
 import navbread from 'components/navbread/navbread.vue';
+import modal from 'components/modal/modal.vue';
+import {getCartList, deleteProduct} from 'api/users.js';
+import {formatPrice} from 'common/js/format.js';
 
 export default {
+    data () {
+        return {
+            cartList: [],
+            deleteMdShow: false,
+            deleteProductId: ''
+        };
+    },
+    mounted () {
+        this._getCartList();
+    },
+    methods: {
+        _getCartList () {
+            getCartList().then((res) => {
+                if (res.status === '0') {
+                    this.cartList = res.result;
+                    console.log(this.cartList);
+                }
+            });
+        },
+        showDeleteModal (productId) {
+            this.deleteMdShow = true;
+            this.deleteProductId = productId;
+        },
+        closeDeleteModal () {
+            this.deleteMdShow = false;
+        },
+        deleteProduct () {
+            deleteProduct(this.deleteProductId).then((res) => {
+                if (res.status === '0') {
+                    console.log(res.result);
+                    // 删除成功关闭删除模态框
+                    this.deleteMdShow = false;
+                    // 重新获取购物车列表数据
+                    this._getCartList();
+                }
+            });
+        }
+    },
+    computed: {
+        totalPrice () {
+            let sum = 0;
+            this.cartList.forEach((item) => {
+                sum += item.salePrice * item.productNum;
+            });
+            return sum.toFixed(2);
+        }
+    },
+    filters: {
+        formatPrice (price) {
+            return formatPrice(price);
+        }
+    },
     components: {
-        navbread
+        navbread,
+        modal
     }
 };
 </script>
@@ -229,4 +271,46 @@ export default {
                         background: #d1434a
                     &:hover
                         background: rgba(209, 67, 74, 0.8)
+        .modal-text
+            height: 80px
+            margin-bottom: 10px
+            text-align: center
+            color: #666
+        .modal-btn
+            height: 40px
+            .btn-success
+                display: inline-block
+                width: 45%
+                margin: 0 2%
+                line-height: 40px
+                text-align: center
+                border: 1px solid #d1434a
+                box-sizing: border-box
+                font-weight: 700
+                cursor: pointer
+                &.left
+                    color: #d1434a
+                    &:hover
+                        background: rgba(209, 67, 74, 0.2)
+                &.right
+                    background: #d1434a
+                    color: #ffffff
+                    &:hover
+                        background: rgba(209, 67, 74, 0.8)
+            @media only screen and (max-width: 375px)
+                .btn-success
+                    margin: 0 1%
+                    font-size: 13px
+            .btn-fail
+                width: 50%
+                margin: 0 auto
+                line-height: 40px
+                text-align: center
+                border: 1px solid #d1434a
+                box-sizing: border-box
+                font-weight: 700
+                color: #d1434a
+                cursor: pointer
+                &:hover
+                    background: rgba(209, 67, 74, 0.2)
 </style>

@@ -94,4 +94,51 @@ router.get('/checklogin', function(req, res, next) {
   }
 });
 
+// 获取用户购物车参数
+router.get('/cartlist', function(req, res, next) {
+  var userId = req.cookies.userId;
+
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      if (doc) {
+        res.json({
+          status: '0',
+          msg: '',
+          result: doc.cartList
+        });
+      }
+    }
+  });
+});
+
+// 删除购物车中商品
+router.post('/deleteproduct', function(req, res, next) {
+  // 获取cookie中的用户id和post请求中的商品id
+  var userId = req.cookies.userId;
+  var productId = req.body.productId;
+
+  // update更新数据库,$pull删除商品
+  User.update({userId: userId}, {$pull: {'cartList': {'productId': productId}}}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'success'
+      })
+    }
+  });
+})
+
 module.exports = router;

@@ -8,7 +8,7 @@
     </div>
     <div class="textinput">
         <div class="icon icon-message"></div>
-        <input type="text" v-model="userPwd">
+        <input type="text" v-model="userPwd" @keyup.enter="login">
     </div>
     <div class="btn-login" @click="login">登录</div>
 </modal>
