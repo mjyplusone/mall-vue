@@ -176,11 +176,13 @@ router.get('/addresslist', function(req, res, next) {
         result: ''
       });
     } else {
-      res.json({
-        status: '0',
-        msg: '',
-        result: doc.addressList
-      });
+      if (doc) {
+        res.json({
+          status: '0',
+          msg: '',
+          result: doc.addressList
+        });
+      }
     }
   });
 })

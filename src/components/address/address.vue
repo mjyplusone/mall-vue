@@ -27,13 +27,13 @@
           <div class="list shipping-address">
               <div class="title">收货地址</div>
               <ul>
-                  <li v-for="item in addressList" :key="item.addressId">
-                      <div class="content selected">
+                  <li v-for="(item, index) in filterAddressList" :key="item.addressId">
+                      <div class="content" :class="{'selected': selectedAddrIndex === index}" @click="selectAddress(index)">
                           <div class="nickname">{{ item.userName }}</div>
                           <div class="useraddress">{{ item.streetName }}</div>
                           <div class="userphone">{{ item.tel }}</div>
-                          <div class="default" v-if="item.isDefault">默认地址</div>
-                          <div class="default" v-if="!item.isDefault">设置为默认地址</div>
+                          <div class="default" v-show="item.isDefault">默认地址</div>
+                          <div class="default" v-show="!item.isDefault">设置为默认地址</div>
                           <div class="icon-delete"></div>
                       </div>
                   </li>
@@ -46,7 +46,12 @@
                       </div>
                   </li>
               </ul>
-              <div class="more">more <i class="icon-down"></i></div>
+              <div class="more">
+                  <span @click="toggleAddressMore">more
+                      <i class="icon-down" v-show="limit === 3"></i>
+                      <i class="icon-up" v-show="limit > 3"></i>
+                  </span>
+              </div>
           </div>
           <div class="list shipping-method">
               <div class="title">收货方式</div>
@@ -72,7 +77,11 @@ import {getAddressList} from 'api/users.js';
 export default {
     data () {
         return {
-            addressList: []
+            addressList: [],
+            // 默认显示地址条数
+            limit: 3,
+            // 选中地址索引
+            selectedAddrIndex: 0
         };
     },
     mounted () {
@@ -86,6 +95,23 @@ export default {
                     console.log(this.addressList);
                 }
             });
+        },
+        toggleAddressMore () {
+            if (this.limit === 3) {
+                // 当前为不展开状态,点击展开
+                this.limit = this.addressList.length;
+            } else {
+                // 当前为展开状态,点击收起
+                this.limit = 3;
+            }
+        },
+        selectAddress (index) {
+            this.selectedAddrIndex = index;
+        }
+    },
+    computed: {
+        filterAddressList () {
+            return this.addressList.slice(0, this.limit);
         }
     },
     components: {
@@ -183,6 +209,7 @@ export default {
                     margin-bottom: 12px
                 .useraddress
                     height: 44px
+                    line-height: 1.25
                 .userphone
                     margin-bottom: 20px
                 .default
