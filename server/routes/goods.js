@@ -127,7 +127,7 @@ router.post('/addcart', function (req, res, next) {
                         } else {
                             if (goodsDoc) {
                                 goodsDoc.productNum = 1;
-                                // 选中状态
+                                // 选中状态,默认选中
                                 goodsDoc.checked = 1;
 
                                 console.log(goodsDoc);

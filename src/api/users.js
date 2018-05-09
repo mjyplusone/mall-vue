@@ -37,3 +37,12 @@ export function deleteProduct (productId) {
         return Promise.resolve(res.data);
     });
 }
+
+export function editProductNum (productId, productNum) {
+    return axios.post('/api/users/editnum', {
+        productId: productId,
+        productNum: productNum
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}

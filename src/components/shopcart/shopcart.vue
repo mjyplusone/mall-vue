@@ -15,10 +15,10 @@
                       <th>EDIT</th>
                   </thead>
                   <tbody>
-                      <tr v-for="item in cartList" :key="item.productId">
+                      <tr v-for="(item, index) in cartList" :key="item.productId">
                           <td class="item-name">
                               <div>
-                                <div class="checkbtn checked"></div>
+                                <div class="checkbtn" :class="{'checked': item.ischecked}" @click="toggleCheck(item)"></div>
                                 <img :src="'/static/' + item.productImage" alt="">
                                 <span class="item-text">{{ item.productName }}</span>
                               </div>
@@ -26,23 +26,23 @@
                           <td class="item-price">￥{{ item.salePrice | formatPrice }}</td>
                           <td class="item-num">
                               <div class="counter">
-                                  <span class="minus">-</span>
+                                  <span class="minus" @click="editProductNum('minus', item)">-</span>
                                   <span class="num">{{ item.productNum }}</span>
-                                  <span class="plus">+</span>
+                                  <span class="plus" @click="editProductNum('plus', item)">+</span>
                               </div>
                           </td>
                           <td class="item-subprice">￥{{ item.salePrice * item.productNum | formatPrice }}</td>
                           <td class="item-edit">
-                              <div class="icon-delete" @click="showDeleteModal(item.productId)"></div>
+                              <div class="icon-delete" @click="showDeleteModal(item.productId, index)"></div>
                           </td>
                       </tr>
                   </tbody>
               </table>
           </div>
           <div class="checkout">
-              <div class="checkbtn checked"></div>
+              <div class="checkbtn" :class="{'checked': isAllChecked}" @click="toggleAllCheck"></div>
               <div class="selectall">Select all</div>
-              <div class="total">Item total: <span class="totalnum">￥{{ totalPrice }}</span></div>
+              <div class="total">Item total: <span class="totalnum">￥{{ totalPrice | formatPrice }}</span></div>
               <div class="checkout-btn checked">CHECKOUT</div>
           </div>
       </div>
@@ -59,15 +59,19 @@
 <script>
 import navbread from 'components/navbread/navbread.vue';
 import modal from 'components/modal/modal.vue';
-import {getCartList, deleteProduct} from 'api/users.js';
+import {getCartList, deleteProduct, editProductNum} from 'api/users.js';
 import {formatPrice} from 'common/js/format.js';
+import Vue from 'vue';
 
 export default {
     data () {
         return {
             cartList: [],
             deleteMdShow: false,
-            deleteProductId: ''
+            // 删除商品id
+            deleteProductId: '',
+            // 删除商品在前端的序号
+            deleteIndex: -1
         };
     },
     mounted () {
@@ -78,13 +82,18 @@ export default {
             getCartList().then((res) => {
                 if (res.status === '0') {
                     this.cartList = res.result;
+                    this.cartList.forEach((item) => {
+                        // 添加新属性
+                        Vue.set(item, 'ischecked', false);
+                    });
                     console.log(this.cartList);
                 }
             });
         },
-        showDeleteModal (productId) {
+        showDeleteModal (productId, index) {
             this.deleteMdShow = true;
             this.deleteProductId = productId;
+            this.deleteIndex = index;
         },
         closeDeleteModal () {
             this.deleteMdShow = false;
@@ -95,19 +104,58 @@ export default {
                     console.log(res.result);
                     // 删除成功关闭删除模态框
                     this.deleteMdShow = false;
-                    // 重新获取购物车列表数据
-                    this._getCartList();
+                    // // 重新获取购物车列表数据
+                    // this._getCartList();
+                    // 此处应该在前端直接修改(使之与后端同步),如果重新获取购物车列表会重置checked状态
+                    this.cartList.splice(this.deleteIndex, 1);
                 }
             });
+        },
+        editProductNum (flag, item) {
+            if (flag === 'minus') {
+                // 数量小于1则不能继续减少
+                if (item.productNum <= 1) {
+                    return;
+                }
+                item.productNum--;
+            } else {
+                item.productNum++;
+            }
+            editProductNum(item.productId, item.productNum).then((res) => {
+                if (res.status === '0') {
+                    console.log(res.result);
+                }
+            });
+        },
+        toggleCheck (item) {
+            item.ischecked = !item.ischecked;
+        },
+        toggleAllCheck () {
+            if (this.isAllChecked) {
+                this.cartList.forEach((item) => {
+                    item.ischecked = false;
+                });
+            } else {
+                this.cartList.forEach((item) => {
+                    item.ischecked = true;
+                });
+            }
         }
     },
     computed: {
         totalPrice () {
             let sum = 0;
             this.cartList.forEach((item) => {
-                sum += item.salePrice * item.productNum;
+                if (item.ischecked) {
+                    sum += parseFloat(item.salePrice) * parseFloat(item.productNum);
+                }
             });
             return sum.toFixed(2);
+        },
+        isAllChecked () {
+            return this.cartList.every((item) => {
+                return item.ischecked === true;
+            });
         }
     },
     filters: {

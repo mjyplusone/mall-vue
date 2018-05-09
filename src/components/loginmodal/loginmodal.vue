@@ -110,6 +110,7 @@ export default {
         line-height: 40px
         text-align: center
         color: #ffffff
+        cursor: pointer
         &:hover
             background: rgba(0, 157, 230, 0.7)
     @media only screen and (max-width: 767px)

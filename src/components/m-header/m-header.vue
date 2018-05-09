@@ -5,7 +5,8 @@
       <div class="title">EasyMall</div>
       <div class="username" v-show="loginUserName">{{ loginUserName }}</div>
       <div class="login" @click="logToggle">{{ logText }}</div>
-      <div class="shopcart"></div>
+      <div class="shopcart" @click="goShopcart"></div>
+      <!-- <router-link class="shopcart" tag="div" to="/shopcart"></router-link> -->
     </div>
   </div>
 </template>
@@ -38,6 +39,15 @@ export default {
           this.setLoginUserName(res.result);
         }
       });
+    },
+    goShopcart () {
+      if (this.loginUserName) {
+        this.$router.push({
+          path: '/shopcart'
+        });
+      } else {
+        this.setIsShowLogin(true);
+      }
     },
     ...mapMutations({
       setIsShowLogin: 'SET_ISSHOWLOGIN',
@@ -100,4 +110,5 @@ export default {
         height: 30px
         background: url('../../common/image/shopcart.png')
         background-size: 100%
+        cursor: pointer
 </style>

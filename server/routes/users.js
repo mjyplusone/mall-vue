@@ -94,7 +94,7 @@ router.get('/checklogin', function(req, res, next) {
   }
 });
 
-// 获取用户购物车参数
+// 获取用户购物车列表
 router.get('/cartlist', function(req, res, next) {
   var userId = req.cookies.userId;
 
@@ -135,10 +135,34 @@ router.post('/deleteproduct', function(req, res, next) {
       res.json({
         status: '0',
         msg: '',
-        result: 'success'
-      })
+        result: 'delete product success'
+      });
     }
   });
+})
+
+// 改变商品数量
+router.post('/editnum', function(req, res, next) {
+  var userId = req.cookies.userId;
+  var productId = req.body.productId;
+  var productNum = req.body.productNum;
+
+  User.update({'userId': userId, 'cartList.productId': productId}, {'cartList.$.productNum': productNum}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'edit product num success'
+      });
+    }
+  });
+
 })
 
 module.exports = router;
