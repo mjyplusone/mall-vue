@@ -162,7 +162,27 @@ router.post('/editnum', function(req, res, next) {
       });
     }
   });
+})
 
+// 获取用户地址列表
+router.get('/addresslist', function(req, res, next) {
+  var userId = req.cookies.userId;
+
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: doc.addressList
+      });
+    }
+  });
 })
 
 module.exports = router;

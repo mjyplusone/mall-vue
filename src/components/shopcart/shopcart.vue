@@ -43,7 +43,7 @@
               <div class="checkbtn" :class="{'checked': isAllChecked}" @click="toggleAllCheck"></div>
               <div class="selectall">Select all</div>
               <div class="total">Item total: <span class="totalnum">￥{{ totalPrice | formatPrice }}</span></div>
-              <div class="checkout-btn checked">CHECKOUT</div>
+              <div class="checkout-btn" :class="{'checked': hasChecked}" @click="checkOut">CHECKOUT</div>
           </div>
       </div>
       <modal :mdShow="deleteMdShow" @closeModal="closeDeleteModal">
@@ -140,6 +140,13 @@ export default {
                     item.ischecked = true;
                 });
             }
+        },
+        checkOut () {
+            if (this.hasChecked) {
+                this.$router.push({
+                    path: '/address'
+                });
+            }
         }
     },
     computed: {
@@ -154,6 +161,11 @@ export default {
         },
         isAllChecked () {
             return this.cartList.every((item) => {
+                return item.ischecked === true;
+            });
+        },
+        hasChecked () {
+            return this.cartList.some((item) => {
                 return item.ischecked === true;
             });
         }
@@ -317,8 +329,8 @@ export default {
                     cursor: pointer
                     &.checked
                         background: #d1434a
-                    &:hover
-                        background: rgba(209, 67, 74, 0.8)
+                        &:hover
+                            background: rgba(209, 67, 74, 0.8)
         .modal-text
             height: 80px
             margin-bottom: 10px

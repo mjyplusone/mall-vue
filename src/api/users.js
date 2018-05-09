@@ -46,3 +46,10 @@ export function editProductNum (productId, productNum) {
         return Promise.resolve(res.data);
     });
 }
+
+export function getAddressList () {
+    return axios.get('/api/users/addresslist')
+    .then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
