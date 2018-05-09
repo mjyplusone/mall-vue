@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import goodslist from 'components/goodslist/goodslist.vue';
 import shopcart from 'components/shopcart/shopcart.vue';
 import address from 'components/address/address.vue';
+import order from 'components/order/order.vue';
 
 Vue.use(Router);
 
@@ -23,6 +24,10 @@ export default new Router({
     {
       path: '/address',
       component: address
+    },
+    {
+      path: '/order',
+      component: order
     }
   ]
 });

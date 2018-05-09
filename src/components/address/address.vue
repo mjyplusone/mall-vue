@@ -28,13 +28,13 @@
               <div class="title">收货地址</div>
               <ul>
                   <li v-for="(item, index) in filterAddressList" :key="item.addressId">
-                      <div class="content" :class="{'selected': selectedAddrIndex === index}" @click="selectAddress(index)">
+                      <div class="content" :class="{'selected': selectedAddrIndex === index}" @click="selectAddress(index, item.addressId)">
                           <div class="nickname">{{ item.userName }}</div>
                           <div class="useraddress">{{ item.streetName }}</div>
                           <div class="userphone">{{ item.tel }}</div>
                           <div class="default" v-show="item.isDefault">默认地址</div>
-                          <div class="default" v-show="!item.isDefault">设置为默认地址</div>
-                          <div class="icon-delete"></div>
+                          <div class="setdefault" v-show="!item.isDefault" @click="setDefault(item.addressId)">设置为默认地址</div>
+                          <div class="icon-delete" @click="showDeleteMdModal(item.addressId)"></div>
                       </div>
                   </li>
                   <li>
@@ -65,14 +65,22 @@
                   </li>
               </ul>
           </div>
-          <div class="nextbtn">NEXT</div>
+          <router-link tag="div" class="nextbtn" :to="{path: '/order', query: {'addressId': selectedAddrId}}">NEXT</router-link>
       </div>
+      <modal :mdShow="deleteMdShow" @closeModal="closeDeleteModal">
+          <div class="modal-text">确定删除此地址?</div>
+          <div class="modal-btn">
+              <div class="btn-success left" @click="deleteAddress">YES</div>
+              <div class="btn-success right" @click="closeDeleteModal">NO</div>
+          </div>
+      </modal>
   </div>
 </template>
 
 <script>
 import navbread from 'components/navbread/navbread.vue';
-import {getAddressList} from 'api/users.js';
+import modal from 'components/modal/modal.vue';
+import {getAddressList, setDefault, deleteAddress} from 'api/users.js';
 
 export default {
     data () {
@@ -81,7 +89,13 @@ export default {
             // 默认显示地址条数
             limit: 3,
             // 选中地址索引
-            selectedAddrIndex: 0
+            selectedAddrIndex: 0,
+            // 选中地址id
+            selectedAddrId: '',
+            // 删除地址模态框
+            deleteMdShow: false,
+            // 要删除的地址id
+            deleteAddressId: ''
         };
     },
     mounted () {
@@ -93,6 +107,12 @@ export default {
                 if (res.status === '0') {
                     this.addressList = res.result;
                     console.log(this.addressList);
+                    // 设置初始选中地址id
+                    this.addressList.forEach((item) => {
+                        if (item.isDefault) {
+                            this.selectedAddrId = item.addressId;
+                        }
+                    });
                 }
             });
         },
@@ -105,17 +125,55 @@ export default {
                 this.limit = 3;
             }
         },
-        selectAddress (index) {
+        selectAddress (index, addressId) {
             this.selectedAddrIndex = index;
+            this.selectedAddrId = addressId;
+        },
+        setDefault (addressId) {
+            setDefault(addressId).then((res) => {
+                if (res.status === '0') {
+                    console.log('setdedault success');
+                    this._getAddressList();
+                    // 因为刚选中的默认地址放到了第一个,索引要跟着变
+                    this.selectedAddrIndex = 0;
+                }
+            });
+        },
+        showDeleteMdModal (addressId) {
+            this.deleteMdShow = true;
+            this.deleteAddressId = addressId;
+        },
+        closeDeleteModal () {
+            this.deleteMdShow = false;
+        },
+        deleteAddress () {
+            deleteAddress(this.deleteAddressId).then((res) => {
+                if (res.status === '0') {
+                    console.log('delete address success');
+                    this.deleteMdShow = false;
+                    this._getAddressList();
+                }
+            });
         }
     },
     computed: {
         filterAddressList () {
-            return this.addressList.slice(0, this.limit);
+            let list1 = [];
+            let list2 = [];
+            this.addressList.forEach((item) => {
+                if (item.isDefault) {
+                    list1.push(item);
+                } else {
+                    list2.push(item);
+                }
+            });
+            return list1.concat(list2).slice(0, this.limit);
+            // return this.addressList.slice(0, this.limit);
         }
     },
     components: {
-        navbread
+        navbread,
+        modal
     }
 };
 </script>
@@ -205,37 +263,44 @@ export default {
                             width: 100%
                             padding-left: 0
             .shipping-address
-                .nickname
-                    margin-bottom: 12px
-                .useraddress
-                    height: 44px
-                    line-height: 1.25
-                .userphone
-                    margin-bottom: 20px
-                .default
-                    color: #ee7a23
-                .icon-delete
-                    position: absolute
-                    bottom: 15px
-                    right: 15px
-                    font-size: 20px
-                    color: #605f5f
-                .add-wrapper
-                    position: relative
-                    margin: 20px 0
-                    height: 80px
-                    .icon-close
+                .content
+                    .nickname
+                        margin-bottom: 12px
+                    .useraddress
+                        height: 44px
+                        line-height: 1.25
+                    .userphone
+                        margin-bottom: 20px
+                    .default
+                        color: #ee7a23
+                    .setdefault
+                        display: none
+                    .icon-delete
                         position: absolute
-                        top: 0
-                        left: 50%
-                        transform: translateX(-50%) rotate(45deg)
-                        font-size: 50px
-                        color: rgba(0, 0, 0, 0.5)
-                    .addtext
-                        position: absolute
-                        bottom: 0
-                        left: 50%
-                        transform: translateX(-50%)
+                        bottom: 15px
+                        right: 15px
+                        font-size: 20px
+                        color: #605f5f
+                    .add-wrapper
+                        position: relative
+                        margin: 20px 0
+                        height: 80px
+                        .icon-close
+                            position: absolute
+                            top: 0
+                            left: 50%
+                            transform: translateX(-50%) rotate(45deg)
+                            font-size: 50px
+                            color: rgba(0, 0, 0, 0.5)
+                        .addtext
+                            position: absolute
+                            bottom: 0
+                            left: 50%
+                            transform: translateX(-50%)
+                    &.selected:hover
+                        .setdefault
+                            display: block
+                            color: #ee7a23
             .shipping-method
                 .methodname
                     margin-bottom: 12px
@@ -260,4 +325,34 @@ export default {
                 cursor: pointer
                 &:hover
                     background: rgba(209, 67, 74, 0.8)
+        .modal-text
+            height: 80px
+            margin-bottom: 10px
+            text-align: center
+            color: #666
+        .modal-btn
+            height: 40px
+            .btn-success
+                display: inline-block
+                width: 45%
+                margin: 0 2%
+                line-height: 40px
+                text-align: center
+                border: 1px solid #d1434a
+                box-sizing: border-box
+                font-weight: 700
+                cursor: pointer
+                &.left
+                    color: #d1434a
+                    &:hover
+                        background: rgba(209, 67, 74, 0.2)
+                &.right
+                    background: #d1434a
+                    color: #ffffff
+                    &:hover
+                        background: rgba(209, 67, 74, 0.8)
+            @media only screen and (max-width: 375px)
+                .btn-success
+                    margin: 0 1%
+                    font-size: 13px
 </style>

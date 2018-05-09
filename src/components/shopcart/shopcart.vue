@@ -361,16 +361,4 @@ export default {
                 .btn-success
                     margin: 0 1%
                     font-size: 13px
-            .btn-fail
-                width: 50%
-                margin: 0 auto
-                line-height: 40px
-                text-align: center
-                border: 1px solid #d1434a
-                box-sizing: border-box
-                font-weight: 700
-                color: #d1434a
-                cursor: pointer
-                &:hover
-                    background: rgba(209, 67, 74, 0.2)
 </style>

@@ -53,3 +53,19 @@ export function getAddressList () {
         return Promise.resolve(res.data);
     });
 }
+
+export function setDefault (addressId) {
+    return axios.post('api/users/setdefault', {
+        addressId: addressId
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
+
+export function deleteAddress (addressId) {
+    return axios.post('api/users/deleteaddr', {
+        addressId: addressId
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}

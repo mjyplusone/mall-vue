@@ -187,4 +187,69 @@ router.get('/addresslist', function(req, res, next) {
   });
 })
 
+// 设置默认地址
+router.post('/setdefault', function(req, res, next) {
+  var userId = req.cookies.userId;
+  var addressId = req.body.addressId;
+
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      if (doc) {
+        doc.addressList.forEach((item) => {
+          if (item.addressId === addressId) {
+            item.isDefault = true;
+          } else {
+            item.isDefault = false;
+          }
+        });
+        
+        // 修改完isDefault字段,保存
+        doc.save(function(err, doc) {
+          if (err) {
+            res.json({
+              status: '1',
+              msg: err.message,
+              result: ''
+            });
+          } else {
+            res.json({
+              status: '0',
+              msg: '',
+              result: ''
+            });
+          }
+        });
+      }
+    }
+  });
+})
+
+// 删除地址
+router.post('/deleteaddr', function(req, res, next) {
+  var userId = req.cookies.userId;
+  var addressId = req.body.addressId;
+
+  User.update({userId: userId}, {$pull: {'addressList': {'addressId': addressId}}}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'delete address success'
+      });
+    }
+  });
+})
+
 module.exports = router;
