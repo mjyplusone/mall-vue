@@ -4,26 +4,7 @@
           <span>My Address</span>
       </navbread>
       <div class="address-content">
-          <div class="progress">
-              <ul >
-                  <li>
-                      <div class="text">Confirm Address</div>
-                      <div class="dot"></div>
-                  </li>
-                  <li>
-                      <div class="text">View Your Order</div>
-                      <div class="dot"></div>
-                  </li>
-                  <li>
-                      <div class="text">Make PayMent</div>
-                      <div class="dot"></div>
-                  </li>
-                  <li>
-                      <div class="text">Order Confirmation</div>
-                      <div class="dot"></div>
-                  </li>
-              </ul>
-          </div>
+          <m-progress :step="1"></m-progress>
           <div class="list shipping-address">
               <div class="title">收货地址</div>
               <ul>
@@ -96,6 +77,7 @@
 <script>
 import navbread from 'components/navbread/navbread.vue';
 import modal from 'components/modal/modal.vue';
+import MProgress from 'components/m-progress/m-progress.vue';
 import {getAddressList, setDefault, deleteAddress, addAddress} from 'api/users.js';
 
 export default {
@@ -210,7 +192,8 @@ export default {
     },
     components: {
         navbread,
-        modal
+        modal,
+        MProgress
     }
 };
 </script>
@@ -225,35 +208,6 @@ export default {
             margin: 0 auto
             padding: 50px 10px
             box-sizing: border-box
-            .progress
-                height: 40px
-                border-bottom: 2px solid #ccc
-                ul
-                    display: flex
-                    height: 100%
-                    li
-                        position: relative
-                        flex: 1
-                        height: 100%
-                        text-align: center
-                        .text
-                            font-weight: 700
-                            color: #999
-                        .dot
-                            position: absolute
-                            top: 100%
-                            left: 50%
-                            transform: translateY(-50%)
-                            width: 14px
-                            height: 14px
-                            border-radius: 50%
-                            background: #ccc
-                        &:first-child
-                            border-bottom: 2px solid #d1434a
-                            .text
-                                color: #d1434a
-                            .dot
-                                 background: #d1434a
             .list
                 margin-top: 50px
                 .title

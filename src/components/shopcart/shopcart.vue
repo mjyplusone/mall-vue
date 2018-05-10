@@ -5,14 +5,14 @@
       </navbread>
       <div class="cartlist">
           <h2 class="cartlist-title">我的购物车</h2>
-          <div class="carlist-content">
+          <div class="cartlist-content">
               <table>
                   <thead>
-                      <th>ITEMS</th>
-                      <th>PRICE</th>
-                      <th>QUANTITY</th>
-                      <th>SUBPRICE</th>
-                      <th>EDIT</th>
+                      <th>商品</th>
+                      <th>单价</th>
+                      <th>数量</th>
+                      <th>总价</th>
+                      <th>编辑</th>
                   </thead>
                   <tbody>
                       <tr v-for="(item, index) in cartList" :key="item.productId">
@@ -62,6 +62,7 @@ import modal from 'components/modal/modal.vue';
 import {getCartList, deleteProduct, editProductNum} from 'api/users.js';
 import {formatPrice} from 'common/js/format.js';
 import Vue from 'vue';
+import {mapMutations} from 'vuex';
 
 export default {
     data () {
@@ -143,11 +144,23 @@ export default {
         },
         checkOut () {
             if (this.hasChecked) {
+                // 选中商品加入订单列表中
+                let tmplist = [];
+                this.cartList.forEach((item) => {
+                    if (item.ischecked === true) {
+                        tmplist.push(item);
+                    }
+                });
+                this.setOrderList(tmplist);
+                // 跳转路由
                 this.$router.push({
                     path: '/address'
                 });
             }
-        }
+        },
+        ...mapMutations({
+            setOrderList: 'SET_ORDERLIST'
+        })
     },
     computed: {
         totalPrice () {
@@ -195,7 +208,7 @@ export default {
             .cartlist-title
                 font-size: 25px
                 font-weight: 700
-            .carlist-content
+            .cartlist-content
                 margin-top: 30px
                 table
                     width: 100%

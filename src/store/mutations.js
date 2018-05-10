@@ -6,6 +6,9 @@ const mutations = {
     },
     [types.SET_LOGINUSERNAME] (state, username) {
         state.loginUserName = username;
+    },
+    [types.SET_ORDERLIST] (state, list) {
+        state.orderList = list;
     }
 };
 
