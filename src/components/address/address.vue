@@ -38,7 +38,7 @@
                       </div>
                   </li>
                   <li>
-                      <div class="content">
+                      <div class="content" @click="showAddModal">
                           <div class="add-wrapper">
                             <div class="icon-close"></div>
                             <div class="addtext">添加新地址</div>
@@ -74,13 +74,29 @@
               <div class="btn-success right" @click="closeDeleteModal">NO</div>
           </div>
       </modal>
+      <modal :mdShow="addMdShow" @closeModal="closeAddModal">
+          <div class="title-add">新增收货地址</div>
+          <div class="addinput">
+              <label for="receiver">收货人姓名</label>
+              <input type="text" v-model="userName" id="receiver">
+          </div>
+          <div class="addinput">
+              <label for="address">详细地址</label>
+              <input type="text" v-model="streetName" id="address">
+          </div>
+          <div class="addinput">
+              <label for="phone">手机号码</label>
+              <input type="text" v-model="tel" id="phone" @keyup.enter="saveAddress">
+          </div>
+          <div class="btn-save" @click="saveAddress">保存</div>
+      </modal>
   </div>
 </template>
 
 <script>
 import navbread from 'components/navbread/navbread.vue';
 import modal from 'components/modal/modal.vue';
-import {getAddressList, setDefault, deleteAddress} from 'api/users.js';
+import {getAddressList, setDefault, deleteAddress, addAddress} from 'api/users.js';
 
 export default {
     data () {
@@ -95,7 +111,13 @@ export default {
             // 删除地址模态框
             deleteMdShow: false,
             // 要删除的地址id
-            deleteAddressId: ''
+            deleteAddressId: '',
+            // 增加地址模态框
+            addMdShow: false,
+            // 增加地址相关
+            userName: '',
+            streetName: '',
+            tel: ''
         };
     },
     mounted () {
@@ -153,6 +175,21 @@ export default {
                     this.deleteMdShow = false;
                     this._getAddressList();
                 }
+            });
+        },
+        closeAddModal () {
+            this.addMdShow = false;
+        },
+        showAddModal () {
+            this.addMdShow = true;
+        },
+        saveAddress () {
+            addAddress(this.userName, this.streetName, this.tel).then((res) => {
+                if (res.status === '0') {
+                    console.log('add address success');
+                }
+                this.addMdShow = false;
+                this._getAddressList();
             });
         }
     },
@@ -355,4 +392,57 @@ export default {
                 .btn-success
                     margin: 0 1%
                     font-size: 13px
+        .title-add
+            position: absolute
+            top: 22px
+            font-size: 18px
+            font-weight: 700
+            line-height: 24px
+            color: #333
+        .addinput
+            width: 100%
+            height: 42px
+            margin-bottom: 15px
+            label
+                display: inline-block
+                width: 80px
+                line-height: 42px
+                text-align: right
+            input
+                display: inline-block
+                vertical-align: top
+                margin-left: 10px
+                margin-top: 6px
+                height: 30px
+                width: 335px
+                border: 1px solid #ccc
+                padding: 0 10px
+                box-sizing: border-box
+                color: #333
+        .btn-save
+            margin-top: 28px
+            width: 100%
+            height: 40px
+            background: #009de6
+            font-size: 18px
+            line-height: 40px
+            text-align: center
+            color: #ffffff
+            cursor: pointer
+            &:hover
+                background: rgba(0, 157, 230, 0.7)
+        @media only screen and (max-width: 767px)
+            .title-save
+                top: 14px
+            .addinput
+                input
+                    width: 50%
+            .btn-login
+                margin-top: 28px
+        @media only screen and (max-width: 350px)
+            .addinput
+                label
+                    font-size: 14px
+                input
+                    width: 40%
 </style>

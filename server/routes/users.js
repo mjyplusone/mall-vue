@@ -252,4 +252,49 @@ router.post('/deleteaddr', function(req, res, next) {
   });
 })
 
+// 新增地址
+router.post('/addaddr', function(req, res, next) {
+  var userId = req.cookies.userId;
+  var userName = req.body.userName;
+  var streetName = req.body.streetName;
+  var tel = req.body.tel;
+
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      if (doc) {
+        doc.addressList.push({
+          'addressId': '10000' + (doc.addressList.length + 1),
+          'userName': userName,
+          'streetName': streetName,
+          'postCode': '',
+          'tel': tel,
+          'isDefault': false
+        });
+
+        doc.save(function(err, doc) {
+          if (err) {
+            res.json({
+              status: '1',
+              msg: err.message,
+              result: ''
+            });
+          } else {
+            res.json({
+              status: '0',
+              msg: '',
+              result: 'add address success'
+            });
+          }
+        });
+      }
+    }
+  })
+})
+
 module.exports = router;

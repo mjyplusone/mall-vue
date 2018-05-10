@@ -69,3 +69,13 @@ export function deleteAddress (addressId) {
         return Promise.resolve(res.data);
     });
 }
+
+export function addAddress (userName, streetName, tel) {
+    return axios.post('api/users/addaddr', {
+        userName: userName,
+        streetName: streetName,
+        tel: tel
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
