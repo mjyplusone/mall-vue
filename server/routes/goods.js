@@ -75,7 +75,7 @@ router.get('/', function (req, res, next) {
 
 // 加入购物车   /api/goods/addcart
 router.post('/addcart', function (req, res, next) {
-    var userId = '100000077';
+    var userId = req.cookies.userId;
 
     // post取参
     var productId = req.body.productId;

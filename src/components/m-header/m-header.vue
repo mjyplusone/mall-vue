@@ -3,7 +3,7 @@
     <div class="header-content">
       <div class="logo"></div>
       <div class="title">EasyMall</div>
-      <div class="username" v-show="loginUserName">{{ loginUserName }}</div>
+      <div class="username" v-show="loginUserName" @click="goUserOrder">{{ loginUserName }}</div>
       <div class="login" @click="logToggle">{{ logText }}</div>
       <div class="shopcart" @click="goShopcart"></div>
       <!-- <router-link class="shopcart" tag="div" to="/shopcart"></router-link> -->
@@ -48,6 +48,11 @@ export default {
       } else {
         this.setIsShowLogin(true);
       }
+    },
+    goUserOrder () {
+      this.$router.push({
+        path: '/userorder'
+      });
     },
     ...mapMutations({
       setIsShowLogin: 'SET_ISSHOWLOGIN',
@@ -94,6 +99,9 @@ export default {
         right: 120px
         line-height: 70px
         color: #666666
+        cursor: pointer
+        &:hover
+          color: #d1434a
       .login
         position: absolute
         right: 60px

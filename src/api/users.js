@@ -23,6 +23,15 @@ export function checkLogin () {
     });
 }
 
+export function signIn (userName, userPwd) {
+    return axios.post('/api/users/signin', {
+        userName: userName,
+        userPwd: userPwd
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
+
 export function getCartList () {
     return axios.get('/api/users/cartlist')
     .then((res) => {
@@ -95,6 +104,12 @@ export function getOrderDetail (param) {
     return axios.get('/api/users/orderdetail', {
         params: param
     }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
+
+export function getUserOrder () {
+    return axios.get('/api/users/userorder').then((res) => {
         return Promise.resolve(res.data);
     });
 }

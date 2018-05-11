@@ -10,7 +10,10 @@
         <div class="icon icon-message"></div>
         <input type="text" v-model="userPwd" @keyup.enter="login">
     </div>
-    <div class="btn-login" @click="login">登录</div>
+    <div class="modal-btn">
+        <div class="btn left" @click="goSignIn">注册</div>
+        <div class="btn right" @click="login">登录</div>
+    </div>
 </modal>
 </template>
 
@@ -50,6 +53,13 @@ export default {
                     // 登录失败
                     this.isShowErr = true;
                 }
+            });
+        },
+        goSignIn () {
+            this.setIsShowLogin(false);
+            this.isShowErr = false;
+            this.$router.push({
+                path: '/signin'
             });
         },
         ...mapMutations({
@@ -101,18 +111,28 @@ export default {
             &:focus
                 border: none
                 outline: none
-    .btn-login
-        margin-top: 28px
-        width: 100%
+    .modal-btn
         height: 40px
-        background: #009de6
-        font-size: 18px
-        line-height: 40px
-        text-align: center
-        color: #ffffff
-        cursor: pointer
-        &:hover
-            background: rgba(0, 157, 230, 0.7)
+        .btn
+            display: inline-block
+            width: 45%
+            line-height: 40px
+            text-align: center
+            border: 1px solid #009de6
+            box-sizing: border-box
+            font-weight: 700
+            cursor: pointer
+            &.left
+                float: left
+                color: #009de6
+                &:hover
+                    background: rgba(0, 157, 230, 0.2)
+            &.right
+                float: right
+                background: #009de6
+                color: #ffffff
+                &:hover
+                    background: rgba(0, 157, 230, 0.7)
     @media only screen and (max-width: 767px)
         .title-login
             top: 14px
@@ -120,6 +140,4 @@ export default {
             padding: 9px 10px
             input
                 width: 70%
-        .btn-login
-            margin-top: 28px
 </style>

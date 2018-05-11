@@ -30,7 +30,7 @@
               <div class="more">
                   <span @click="toggleAddressMore">more
                       <i class="icon-down" v-show="limit === 3"></i>
-                      <i class="icon-up" v-show="limit > 3"></i>
+                      <i class="icon-up" v-show="limit === addressList.length"></i>
                   </span>
               </div>
           </div>

@@ -37,14 +37,14 @@ export default {
             orderTotal: 0
         };
     },
-    mounted() {
+    mounted () {
         this._getOrderDetail();
     },
     methods: {
         _getOrderDetail () {
             var param = {
                 orderId: this.$route.query.orderId
-            }
+            };
             getOrderDetail(param).then((res) => {
                 if (res.status === '0') {
                     this.orderId = res.result.orderId;

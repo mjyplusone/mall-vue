@@ -95,6 +95,68 @@ router.get('/checklogin', function(req, res, next) {
   }
 });
 
+// 注册
+router.post('/signin', function(req, res, next) {
+  var userName = req.body.userName;
+  var userPwd =  req.body.userPwd;
+
+  // 取User表中数据长度
+  User.count({}, function(err, count) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      User.findOne({userName: userName}, function(err, doc) {
+        if (err) {
+          res.json({
+            status: '1',
+            msg: err.message,
+            result: ''
+          });
+        } else {
+          // 用户名不存在,则可以注册
+          if (!doc) {
+            
+            var user = new User({
+              // 利用表中已有数据量生成userId
+              userId: 100000077 + count + '',
+              userName: userName,
+              userPwd: userPwd,
+              orderList: [],
+              cartList: [],
+              addresslist: []
+            });
+
+            user.save(function(err, doc) {
+              if (err) {
+                res.json({
+                  status: '1',
+                  msg: err.message,
+                  result: ''
+                });
+              } else {
+                res.json({
+                  status: '0',
+                  msg: '',
+                  result: '已添加userName: ' + userName
+                });
+              }
+            });
+          } else {
+            res.json({
+              status: '1',
+              msg: '账户已存在'
+            })
+          }
+        }
+      });
+    }
+  });
+})
+
 // 获取用户购物车列表
 router.get('/cartlist', function(req, res, next) {
   var userId = req.cookies.userId;
@@ -369,7 +431,7 @@ router.post('/payment', function(req, res, next) {
   });
 })
 
-// 查询订单信息
+// 查询orderId对应订单信息
 router.get('/orderdetail', function(req, res, next) {
   var userId = req.cookies.userId;
   var orderId = req.query.orderId;
@@ -408,6 +470,29 @@ router.get('/orderdetail', function(req, res, next) {
           status: '1',
           msg: 'no order',
           result: ''
+        });
+      }
+    }
+  });
+})
+
+// 查询用户所有订单
+router.get('/userorder', function(req, res, next) {
+  var userId = req.cookies.userId;
+  
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      if (doc) {
+        res.json({
+          status: '0',
+          msg: '',
+          result: doc.orderList
         });
       }
     }
