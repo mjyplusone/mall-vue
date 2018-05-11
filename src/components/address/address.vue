@@ -46,7 +46,10 @@
                   </li>
               </ul>
           </div>
-          <router-link tag="div" class="nextbtn" :to="{path: '/order', query: {'addressId': selectedAddrId}}">NEXT</router-link>
+          <div class="btn-wrapper">
+              <router-link tag="div" class="btn btn-cart" to="/shopcart">返回购物车</router-link>
+              <router-link tag="div" class="btn btn-next" :to="{path: '/order', query: {'addressId': selectedAddrId}}">NEXT</router-link>
+          </div>
       </div>
       <modal :mdShow="deleteMdShow" @closeModal="closeDeleteModal">
           <div class="modal-text">确定删除此地址?</div>
@@ -301,21 +304,29 @@ export default {
                 .detail
                     line-height: 1.25
                     color: #999
-            .nextbtn
-                margin-top: 20px
-                margin-bottom: 70px
-                float: right
-                width: 200px
-                height: 40px
-                background: #d1434a
-                text-align: center
-                line-height: 40px
-                font-weight: 700
-                letter-spacing: 2px
-                color: #ffffff
-                cursor: pointer
-                &:hover
-                    background: rgba(209, 67, 74, 0.8)
+            .btn-wrapper
+                margin-top: 30px
+                margin-bottom: 50px
+                .btn
+                    display: inline-block
+                    width: 200px
+                    height: 40px
+                    line-height: 40px
+                    font-weight: 700
+                    text-align: center
+                    letter-spacing: 2px
+                    cursor: pointer
+                .btn-cart
+                    border: 1px solid #d1434a
+                    color: #d1434a
+                    &:hover
+                        background: rgba(209, 67, 74, 0.2)
+                .btn-next
+                    float: right
+                    background: #d1434a
+                    color: #ffffff
+                    &:hover
+                        background: rgba(209, 67, 74, 0.8)
         .modal-text
             height: 80px
             margin-bottom: 10px

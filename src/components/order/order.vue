@@ -43,7 +43,7 @@
             </div>
             <div class="btn-wrapper">
                 <router-link tag="div" class="btn prev" to="/address">PREVIOUS</router-link>
-                <div class="btn next">提交订单</div>
+                <div class="btn next" @click="payMent">提交订单</div>
             </div>
         </div>
     </div>
@@ -54,6 +54,7 @@ import navbread from 'components/navbread/navbread.vue';
 import MProgress from 'components/m-progress/m-progress.vue';
 import {mapGetters} from 'vuex';
 import {formatPrice} from 'common/js/format.js';
+import {createOrder} from 'api/users.js';
 
 export default {
     data () {
@@ -61,6 +62,21 @@ export default {
             // 运费
             shipping: 10
         };
+    },
+    methods: {
+        payMent () {
+            console.log(this.subPrice + this.shipping);
+            console.log(this.orderList);
+            console.log(this.$route.query.addressId);
+            createOrder(this.subPrice, this.shipping, this.$route.query.addressId, this.orderList).then((res) => {
+                if (res.status === '0') {
+                    console.log('create order success');
+                    this.$router.push({
+                        path: '/ordersuccess?orderId=' + res.result.orderId
+                    });
+                }
+            });
+        }
     },
     computed: {
         subPrice () {
@@ -187,6 +203,10 @@ export default {
                     box-sizing: border-box
                     font-weight: 700
                     cursor: pointer
+                    border: 1px solid #d1434a
+                    color: #d1434a
+                    &:hover
+                        background: rgba(209, 67, 74, 0.2)
                 .prev
                     border: 1px solid #d1434a
                     color: #d1434a

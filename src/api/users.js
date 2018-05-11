@@ -79,3 +79,22 @@ export function addAddress (userName, streetName, tel) {
         return Promise.resolve(res.data);
     });
 }
+
+export function createOrder (subPrice, shipping, addressId, orderList) {
+    return axios.post('/api/users/payment', {
+        subPrice: subPrice,
+        shipping: shipping,
+        addressId: addressId,
+        orderList: orderList
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}
+
+export function getOrderDetail (param) {
+    return axios.get('/api/users/orderdetail', {
+        params: param
+    }).then((res) => {
+        return Promise.resolve(res.data);
+    });
+}

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var util =  require('../util/util.js');
 
 var User = require('../models/user.js');
 
@@ -294,7 +295,123 @@ router.post('/addaddr', function(req, res, next) {
         });
       }
     }
-  })
+  });
+})
+
+// 生成订单
+router.post('/payment', function(req, res, next) {
+  var userId = req.cookies.userId;
+  var subPrice = req.body.subPrice;
+  var shipping = req.body.shipping;
+  var addressId = req.body.addressId;
+  var orderList =  req.body.orderList;
+
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      var address = '';
+      // 获取用户当前使用的地址信息
+      doc.addressList.forEach((item) => {
+        if (item.addressId === addressId) {
+          address = item;
+        }
+      });
+
+      // 自动生成orderId
+      var platform = '1212'
+      // 生成0-9随机数
+      var random1 = Math.floor(Math.random() * 10);
+      var random2 = Math.floor(Math.random() * 10);
+
+      var sysDate = util.formatDate(new Date(), 'yyyyMMddhhmmss');
+      var createDate = util.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss');
+
+      var orderId = platform + random1 + sysDate + random2;
+
+      var order = {
+        orderId: orderId,
+        subPrice: subPrice,
+        shipping: shipping,
+        orderTotal: subPrice + shipping,
+        addressInfo: address,
+        orderList: orderList,
+        orderStatus: '1',
+        createDate: createDate
+      };
+
+      // 新订单写入数据库
+      doc.orderList.push(order);
+
+      doc.save(function(err2, doc2) {
+        if (err2) {
+          res.json({
+            status: '1',
+            msg: err2.message,
+            result: ''
+          });
+        } else {
+          res.json({
+            status: '0',
+            msg: '',
+            result: {
+              orderId: order.orderId,
+              orderTotal: order.orderTotal
+            }
+          });
+        }
+      });
+    }
+  });
+})
+
+// 查询订单信息
+router.get('/orderdetail', function(req, res, next) {
+  var userId = req.cookies.userId;
+  var orderId = req.query.orderId;
+
+  User.findOne({userId: userId}, function(err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      if (doc.orderList.length > 0) {
+        var order = {};
+        doc.orderList.forEach((item) => {
+          // 从用户所有订单中找到orderId对应的订单
+          if (item.orderId === orderId) {
+            order = item;
+          }
+        });
+        if (order) {
+          res.json({
+            status: '0',
+            msg: '',
+            result: order
+          });
+        } else {
+          res.json({
+            status: '1',
+            msg: 'no order',
+            result: ''
+          });
+        }
+      } else {
+        res.json({
+          status: '1',
+          msg: 'no order',
+          result: ''
+        });
+      }
+    }
+  });
 })
 
 module.exports = router;
