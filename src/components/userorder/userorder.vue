@@ -5,6 +5,7 @@
       </navbread>
       <div class="userorder-content">
           <h2 class="userorder-title">我的订单</h2>
+          <p class="noorder" v-if="orderList.length === 0">您还没有订单，去<a href="/goods">逛逛</a>吧</p>
           <ul class="order-list">
               <li v-for="order in orderList" :key="order.orderId">
                   <p>订单号: {{ order.orderId }}</p>
@@ -101,6 +102,12 @@ export default {
                 margin-bottom: 50px
                 font-size: 25px
                 font-weight: 700
+            .noorder
+                letter-spacing: 2px
+                a
+                    font-weight: 700
+                    text-decoration: underline
+                    color: #009de6
             ul.order-list > li
                 margin-top: 30px
                 padding-bottom: 30px

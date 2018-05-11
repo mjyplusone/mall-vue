@@ -147,7 +147,7 @@ router.post('/signin', function(req, res, next) {
             });
           } else {
             res.json({
-              status: '1',
+              status: '101',
               msg: '账户已存在'
             })
           }

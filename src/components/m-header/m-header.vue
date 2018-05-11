@@ -29,6 +29,9 @@ export default {
         userLogout().then((res) => {
           if (res.status === '0') {
             this.setLoginUserName('');
+            this.$router.push({
+              path: '/goods'
+            });
           }
         });
       }

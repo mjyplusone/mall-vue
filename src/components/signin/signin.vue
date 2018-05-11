@@ -10,6 +10,8 @@
           <div class="signinput">
               <input type="text" placeholder="昵称" v-model="userName">
               <input type="text" placeholder="密码" v-model="userPwd" @keyup.enter="signin">
+              <div class="err" v-show="isEmpty">用户名或密码为空</div>
+              <div class="err" v-show="isExit">该用户已存在</div>
               <div class="btn" @click="signin">注册</div>
           </div>
       </div>
@@ -24,19 +26,31 @@ export default {
     data () {
         return {
             userName: '',
-            userPwd: ''
+            userPwd: '',
+            // 错误情况
+            isEmpty: false,
+            isExit: false
         };
     },
     methods: {
         signin () {
             // 用户名或密码为空则不发送请求
             if (!this.userName || !this.userPwd) {
-                alert('用户名或密码为空');
+                this.isEmpty = true;
+                this.isExit = false;
                 return;
             }
             signIn(this.userName, this.userPwd).then((res) => {
                 if (res.status === '0') {
                     console.log(res.result);
+                    this.isEmpty = false;
+                    this.isExit = false;
+                    this.$router.push({
+                        path: '/goods'
+                    });
+                } else if (res.status === '101') {
+                    this.isExit = true;
+                    this.isEmpty =false;
                 }
             });
         }
