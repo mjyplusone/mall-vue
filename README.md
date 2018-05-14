@@ -51,9 +51,9 @@
 - 查询用户订单
 
 ### 截图
-<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/1.gif" />
-<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/2.gif"/>
-<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/3.gif"/>
-<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/4.gif"/>
-<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/5.gif"/>
-<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/6.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/1.gif" />
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/2.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/3.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/4.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/5.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/6.gif"/>
