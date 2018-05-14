@@ -51,9 +51,15 @@
 - 查询用户订单
 
 ### 截图
+商品列表
 <img src="https://github.com/mjyplusone/mall-vue/raw/master/static/1.gif" />
+响应式
 <img src="https://github.com/mjyplusone/mall-vue/raw/master/static/2.gif"/>
+登录注册
 <img src="https://github.com/mjyplusone/mall-vue/raw/master/static/3.gif"/>
+购物车功能
 <img src="https://github.com/mjyplusone/mall-vue/raw/master/static/4.gif"/>
+地址列表功能
 <img src="https://github.com/mjyplusone/mall-vue/raw/master/static/5.gif"/>
+生成订单并查询用户订单
 <img src="https://github.com/mjyplusone/mall-vue/raw/master/static/6.gif"/>
