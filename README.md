@@ -2,7 +2,7 @@
 
 ### 概述
 基于Vue.js和Node.js的简易商城
-- [项目预览]()(web端请在chrome调试模式下查看)
+- [项目预览]()
 - 前端通过vue-cli搭建，使用Vue全家桶，采用响应式布局；后端通过Node.js+Express框架实现，使用MongoDB进行数据存储
 
 ### 技术栈
