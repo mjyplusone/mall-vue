@@ -332,7 +332,7 @@ router.post('/addaddr', function(req, res, next) {
     } else {
       if (doc) {
         doc.addressList.push({
-          'addressId': '10000' + (doc.addressList.length + 1),
+          'addressId': parseInt(doc.addressList[doc.addressList.length - 1].addressId) + 1 + '',
           'userName': userName,
           'streetName': streetName,
           'postCode': '',

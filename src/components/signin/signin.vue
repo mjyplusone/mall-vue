@@ -8,9 +8,11 @@
               <div class="title">注册</div>
           </div>
           <div class="signinput">
-              <input type="text" placeholder="昵称" v-model="userName">
-              <input type="text" placeholder="密码" v-model="userPwd" @keyup.enter="signin">
+              <input type="text" placeholder="昵称" v-model="userName" @keyup.enter="signin">
+              <input type="password" placeholder="密码" v-model="userPwd" @keyup.enter="signin">
+              <input type="password" placeholder="确认密码" v-model="userPwd2" @keyup.enter="signin">
               <div class="err" v-show="isEmpty">用户名或密码为空</div>
+              <div class="err" v-show="isDif">两次输入密码不一致</div>
               <div class="err" v-show="isExit">该用户已存在</div>
               <div class="btn" @click="signin">注册</div>
           </div>
@@ -27,8 +29,10 @@ export default {
         return {
             userName: '',
             userPwd: '',
+            userPwd2: '',
             // 错误情况
             isEmpty: false,
+            isDif: false,
             isExit: false
         };
     },
@@ -37,6 +41,13 @@ export default {
             // 用户名或密码为空则不发送请求
             if (!this.userName || !this.userPwd) {
                 this.isEmpty = true;
+                this.isDif = false;
+                this.isExit = false;
+                return;
+            }
+            if (this.userPwd !== this.userPwd2) {
+                this.isDif = true;
+                this.isEmpty = false;
                 this.isExit = false;
                 return;
             }
@@ -44,13 +55,16 @@ export default {
                 if (res.status === '0') {
                     console.log(res.result);
                     this.isEmpty = false;
+                    this.isDif = false;
                     this.isExit = false;
                     this.$router.push({
                         path: '/goods'
                     });
+                    alert('注册成功');
                 } else if (res.status === '101') {
                     this.isExit = true;
-                    this.isEmpty =false;
+                    this.isEmpty = false;
+                    this.isDif = false;
                 }
             });
         }
