@@ -24,8 +24,8 @@
 ├── index.html          	 // 项目入口文件
 ├── package.json      		 // 项目配置文件
 ├── static                 // 静态资源
-├── server                		 // 服务端express工程
-│   ├── bin       			   // api请求相关
+├── server                 // 服务端express工程
+│   ├── bin       			  
 │   ├── models      			 // 模型
 │   ├── public          	 // 静态资源
 │   ├── routes               // 路由
@@ -51,9 +51,9 @@
 - 查询用户订单
 
 ### 截图
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/1.gif" />
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/2.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/3.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/4.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/5.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/6.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/1.gif" />
+<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/2.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/3.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/4.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/5.gif"/>
+<img src="https://github.com/mjyplusone/mall-vue/tree/master/static/6.gif"/>
