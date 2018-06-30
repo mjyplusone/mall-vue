@@ -2,7 +2,7 @@
 
 ### 概述
 基于Vue.js和Node.js的简易商城
-- [项目预览]()(web端请在chrome调试模式下查看)
+- [项目预览](http://buybuybuy.lihulab.net)
 - 前端通过vue-cli搭建，使用Vue全家桶，采用响应式布局；后端通过Node.js+Express框架实现，使用MongoDB进行数据存储
 
 ### 技术栈
@@ -24,8 +24,8 @@
 ├── index.html          	 // 项目入口文件
 ├── package.json      		 // 项目配置文件
 ├── static                 // 静态资源
-├── server                		 // 服务端express工程
-│   ├── bin       			   // api请求相关
+├── server                 // 服务端express工程
+│   ├── bin       			  
 │   ├── models      			 // 模型
 │   ├── public          	 // 静态资源
 │   ├── routes               // 路由
@@ -51,9 +51,15 @@
 - 查询用户订单
 
 ### 截图
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/1.gif" />
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/2.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/3.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/4.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/5.gif"/>
-<img src="https://github.com/mjyplusone/mall_vue/blob/master/static/6.gif"/>
+商品列表
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/1.gif" />
+响应式
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/2.gif"/>
+登录注册
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/3.gif"/>
+购物车功能
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/4.gif"/>
+地址列表功能
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/5.gif"/>
+生成订单并查询用户订单
+<img src="https://github.com/mjyplusone/mall-vue/raw/master/static/6.gif"/>
