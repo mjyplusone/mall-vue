@@ -1,7 +1,7 @@
 <template>
   <div class="navbread">
       <div class="navbread-content">
-        <span class="rootaddr"><a href="/">Home</a> / </span>
+        <span class="rootaddr"><router-link tag="a" to="/">Home</router-link> / </span>
         <slot></slot>
       </div>
   </div>

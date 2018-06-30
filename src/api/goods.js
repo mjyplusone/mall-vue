@@ -1,7 +1,10 @@
 import axios from 'axios';
+import {baseUrl, config} from './config.js';
 
 export function getGoodsList (param) {
-    return axios.get('/api/goods', {
+    const url = baseUrl + '/api/goods';
+
+    return axios.get(url, {
         params: param
     }).then((res) => {
         return Promise.resolve(res.data);
@@ -9,9 +12,11 @@ export function getGoodsList (param) {
 }
 
 export function addCartPost (productId) {
-    return axios.post('/api/goods/addcart', {
+    const url = baseUrl + '/api/goods/addcart';
+
+    return axios.post(url, {
         productId: productId
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
 }

@@ -1,115 +1,302 @@
 import axios from 'axios';
+import {baseUrl, config} from './config.js';
 
 export function userLogin (userName, userPwd) {
-    return axios.post('/api/users/login', {
+    const url = baseUrl + '/api/users/login';
+
+    return axios.post(url, {
         userName: userName,
         userPwd: userPwd
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/login',
+    //     method: 'post',
+    //     data: {
+    //         userName: userName,
+    //         userPwd: userPwd
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function userLogout () {
-    return axios.post('/api/users/logout')
+    const url = baseUrl + '/api/users/logout';
+
+    return axios.post(url, {}, config)
     .then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/logout',
+    //     method: 'post',
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function checkLogin () {
-    return axios.get('/api/users/checklogin')
+    const url = baseUrl + '/api/users/checklogin';
+
+    return axios.get(url, {}, config)
     .then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/checklogin',
+    //     method: 'get',
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function signIn (userName, userPwd) {
-    return axios.post('/api/users/signin', {
+    const url = baseUrl + '/api/users/signin';
+
+    return axios.post(url, {
         userName: userName,
         userPwd: userPwd
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/signin',
+    //     method: 'post',
+    //     data: {
+    //         userName: userName,
+    //         userPwd: userPwd
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function getCartList () {
-    return axios.get('/api/users/cartlist')
+    const url = baseUrl + '/api/users/cartlist';
+
+    return axios.get(url, config)
     .then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/cartlist',
+    //     method: 'get',
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function deleteProduct (productId) {
-    return axios.post('/api/users/deleteproduct', {
+    const url = baseUrl + '/api/users/deleteproduct';
+
+    return axios.post(url, {
         productId: productId
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/deleteproduct',
+    //     method: 'post',
+    //     data: {
+    //         productId: productId
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function editProductNum (productId, productNum) {
-    return axios.post('/api/users/editnum', {
+    const url = baseUrl + '/api/users/editnum';
+
+    return axios.post(url, {
         productId: productId,
         productNum: productNum
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/editnum',
+    //     method: 'post',
+    //     data: {
+    //         productId: productId,
+    //         productNum: productNum
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function getAddressList () {
-    return axios.get('/api/users/addresslist')
+    const url = baseUrl + '/api/users/addresslist';
+
+    return axios.get(url, config)
     .then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/addresslist',
+    //     method: 'get',
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function setDefault (addressId) {
-    return axios.post('api/users/setdefault', {
+    const url = baseUrl + '/api/users/setdefault';
+
+    return axios.post(url, {
         addressId: addressId
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/setdefault',
+    //     method: 'post',
+    //     data: {
+    //         addressId: addressId
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function deleteAddress (addressId) {
-    return axios.post('api/users/deleteaddr', {
+    const url = baseUrl + '/api/users/deleteaddr';
+
+    return axios.post(url, {
         addressId: addressId
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/deleteaddr',
+    //     method: 'post',
+    //     data: {
+    //         addressId: addressId
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function addAddress (userName, streetName, tel) {
-    return axios.post('api/users/addaddr', {
+    const url = baseUrl + '/api/users/addaddr';
+
+    return axios.post(url, {
         userName: userName,
         streetName: streetName,
         tel: tel
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/addaddr',
+    //     method: 'post',
+    //     data: {
+    //         userName: userName,
+    //         streetName: streetName,
+    //         tel: tel
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function createOrder (subPrice, shipping, addressId, orderList) {
-    return axios.post('/api/users/payment', {
+    const url = baseUrl + '/api/users/payment';
+
+    return axios.post(url, {
         subPrice: subPrice,
         shipping: shipping,
         addressId: addressId,
         orderList: orderList
-    }).then((res) => {
+    }, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/payment',
+    //     method: 'post',
+    //     data: {
+    //         subPrice: subPrice,
+    //         shipping: shipping,
+    //         addressId: addressId,
+    //         orderList: orderList
+    //     },
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function getOrderDetail (param) {
-    return axios.get('/api/users/orderdetail', {
-        params: param
+    const url = baseUrl + '/api/users/orderdetail';
+
+    return axios.get(url, {
+        params: param,
+        withCredentials: true
     }).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/orderdetail',
+    //     method: 'get',
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }
 
 export function getUserOrder () {
-    return axios.get('/api/users/userorder').then((res) => {
+    const url = baseUrl + '/api/users/userorder';
+
+    return axios.get(url, config).then((res) => {
         return Promise.resolve(res.data);
     });
+
+    // return axios.create({
+    //     baseURL: baseUrl,
+    //     url: '/api/users/userorder',
+    //     method: 'get',
+    //     withCredentials: true
+    // }).then((res) => {
+    //     return Promise.resolve(res.data);
+    // });
 }

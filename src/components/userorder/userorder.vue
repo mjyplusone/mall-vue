@@ -5,7 +5,7 @@
       </navbread>
       <div class="userorder-content">
           <h2 class="userorder-title">我的订单</h2>
-          <p class="noorder" v-if="orderList.length === 0">您还没有订单，去<a href="/goods">逛逛</a>吧</p>
+          <p class="noorder" v-if="orderList.length === 0">您还没有订单，去<router-link tag="a" to="/goods">逛逛</router-link>吧</p>
           <ul class="order-list">
               <li v-for="order in orderList" :key="order.orderId">
                   <p>订单号: {{ order.orderId }}</p>

@@ -7,7 +7,7 @@ var Goods = require('../models/goods');
 var User = require('../models/user');
 
 // 连接数据库,mongoose自带驱动
-mongoose.connect('mongodb://127.0.0.1:27017/easymallDB');
+mongoose.connect('mongodb://127.0.0.1:27017/test');
 
 // 监听是否连接成功
 mongoose.connection.on("connected", function () {
