@@ -2,8 +2,10 @@
 
 ### 概述
 基于Vue.js和Node.js的简易商城
-- [项目预览](http://buybuybuy.lihulab.net)
-- 前端通过vue-cli搭建，使用Vue全家桶，采用响应式布局；后端通过Node.js+Express框架实现，使用MongoDB进行数据存储
+
+前端通过vue-cli搭建，使用Vue全家桶，采用响应式布局；后端通过Node.js+Express框架实现，使用MongoDB进行数据存储
+
+已改进[SSR版本](https://github.com/mjyplusone/mall-ssr)
 
 ### 技术栈
 - Vue2
